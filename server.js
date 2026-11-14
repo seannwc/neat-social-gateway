@@ -8,19 +8,19 @@ const HTML = `<!DOCTYPE html>
 <html>
 <head>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Neat Frame to Shopee Live</title>
+  <title>Neat Frame to Social Live</title>
 </head>
 <body style="font-family:sans-serif;background:#111;color:#fff;padding:16px;max-width:480px;margin:auto">
-  <h3>Neat Frame &rarr; Shopee Live</h3>
-  <label style="font-size:13px;color:#ccc">Shopee RTMP Server URL + Stream Key:</label>
-  <input id="rtmp" placeholder="rtmp://push.shopee.sg/live/YOUR_STREAM_KEY" style="width:100%;padding:12px;margin:6px 0 12px;box-sizing:border-box;border-radius:6px;border:1px solid #444;background:#222;color:#fff">
+  <h3>Neat Frame &rarr; social Live</h3>
+  <label style="font-size:13px;color:#ccc">Social RTMP Server URL + Stream Key:</label>
+  <input id="rtmp" placeholder="rtmp://push.social.sg/live/YOUR_STREAM_KEY" style="width:100%;padding:12px;margin:6px 0 12px;box-sizing:border-box;border-radius:6px;border:1px solid #444;background:#222;color:#fff">
   <button id="btn" style="width:100%;padding:14px;font-size:16px;font-weight:bold;background:#ee4d2d;color:#fff;border:0;border-radius:6px;cursor:pointer">Start Streaming</button>
   <p id="wssInfo" style="font-size:12px;color:#4ade80;word-break:break-all"></p>
   <p id="status" style="font-size:13px;color:#aaa">Ready</p>
   <video id="v" autoplay muted playsinline style="width:100%;border-radius:8px;background:#000;margin-top:8px"></video>
   <script>
     const rtmpInput = document.getElementById('rtmp');
-    rtmpInput.value = localStorage.getItem('shopee_rtmp') || '';
+    rtmpInput.value = localStorage.getItem('social_rtmp') || '';
     const baseWss = 'wss://' + location.host + '/stream';
     document.getElementById('wssInfo').innerText = 'Gateway WSS URL: ' + baseWss;
 
@@ -34,9 +34,9 @@ const HTML = `<!DOCTYPE html>
       }
       const rtmp = rtmpInput.value.trim();
       if (!rtmp.startsWith('rtmp://') && !rtmp.startsWith('rtmps://')) {
-        return alert('Enter a valid Shopee RTMP URL + Stream Key');
+        return alert('Enter a valid social RTMP URL + Stream Key');
       }
-      localStorage.setItem('shopee_rtmp', rtmp);
+      localStorage.setItem('social_rtmp', rtmp);
 
       stream = await navigator.mediaDevices.getUserMedia({
         video: { width: { ideal: 720 }, height: { ideal: 1280 } },
@@ -56,7 +56,7 @@ const HTML = `<!DOCTYPE html>
         };
         rec.start(250);
         document.getElementById('btn').innerText = 'Stop Streaming';
-        document.getElementById('status').innerText = 'LIVE - Pushing to Shopee RTMP';
+        document.getElementById('status').innerText = 'LIVE - Pushing to social RTMP';
       };
 
       ws.onclose = () => {
@@ -91,7 +91,7 @@ wss.on('connection', (ws, req) => {
     return;
   }
 
-  console.log('Starting FFmpeg relay to Shopee...');
+  console.log('Starting FFmpeg relay to social...');
   const ffmpeg = spawn('ffmpeg', [
     '-i', 'pipe:0',
     '-c:v', 'libx264',
