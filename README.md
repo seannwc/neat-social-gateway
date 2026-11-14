@@ -1,2 +1,2 @@
-# neat-shopee-gateway
-neat-shopee-gateway
+# neat-social-gateway
+neat-social-gateway
